@@ -7,13 +7,27 @@ import {
   generateFiles,
   joinPathFragments,
   updateJson,
+  readProjectConfiguration,
 } from '@nrwl/devkit';
 import { reactNativeLibraryGenerator } from '@nrwl/react-native';
 import { normalizeOptions } from '@nrwl/react-native/src/generators/library/lib/normalize-options';
 import { NxCreateReactNativeModuleGeneratorSchema } from './schema';
+
 import * as path from 'path';
-import * as fs from 'fs-extra';
+import {
+  ensureDirSync,
+  statSync,
+  readFileSync,
+  readdirSync,
+  createWriteStream,
+  createReadStream,
+} from 'fs-extra';
+import { dirname } from 'path';
+import * as tar from 'tar-stream';
 import * as ejs from 'ejs';
+import { createGunzip } from 'zlib';
+import { createTempNpmDirectory, packageRegistryPack } from './package_manager';
+import { join } from 'path';
 
 const BINARIES = /(gradlew|\.(jar|keystore|png|jpg|gif))$/;
 
@@ -24,18 +38,27 @@ export default async function (
   // Generate basic react native library using NX React Native Library Generator
   schema.buildable = true;
   await reactNativeLibraryGenerator(tree, schema);
-
   const options = normalizeOptions(tree, schema);
-
-  updateJson(tree, path.join(options.projectRoot, 'project.json'), (json) => {
-    json.targets.build.options.entryFile = path
-      .join(options.projectRoot, 'src/index.tsx')
-      .toString();
-    return json;
-  });
 
   // Get workspace configuration
   const workspace = readWorkspaceConfiguration(tree);
+
+  const dir = createTempNpmDirectory();
+  try {
+    const { tarballPath } = await packageRegistryPack(
+      dir,
+      'create-react-native-library',
+      '0.20.1'
+    );
+
+    await extractDirectoryFromTarball(
+      join(dir, tarballPath),
+      'templates',
+      join(dir, 'templates')
+    );
+  } catch (e) {
+    console.error(e);
+  }
 
   // Prepare options for ejs
   const templateOptions = {
@@ -67,11 +90,11 @@ export default async function (
   };
 
   // Get path to template files from create-react-native-library
-  const createReactNativeLibraryRoot = path.dirname(
-    require.resolve('create-react-native-library/package.json')
-  );
+  // const createReactNativeLibraryRoot = path.dirname(
+  //   require.resolve('create-react-native-library/package.json')
+  // );
 
-  const templates = path.join(createReactNativeLibraryRoot, 'templates');
+  const templates = path.join(dir, 'templates');
 
   const CPP_FILES = path.join(templates, 'cpp-library');
 
@@ -174,7 +197,7 @@ export default async function (
 
 // Generate files from templates to Tree
 const copyDir = (tree: Tree, source: string, dest: string, options: any) => {
-  const files = fs.readdirSync(source);
+  const files = readdirSync(source);
 
   for (const f of files) {
     const target = path.join(
@@ -186,12 +209,12 @@ const copyDir = (tree: Tree, source: string, dest: string, options: any) => {
     );
 
     const file = path.join(source, f);
-    const stats = fs.statSync(file);
+    const stats = statSync(file);
 
     if (stats.isDirectory()) {
       copyDir(tree, file, target, options);
     } else if (!file.match(BINARIES)) {
-      const template = fs.readFileSync(file, 'utf8');
+      const template = readFileSync(file, 'utf8');
       try {
         const newContent = ejs.render(template, options, {});
         tree.write(target, newContent);
@@ -204,3 +227,44 @@ const copyDir = (tree: Tree, source: string, dest: string, options: any) => {
     }
   }
 };
+
+/**
+ * Extracts specified directory from a given tarball to the specified destination.
+ * @param tarballPath The path to the tarball from where the file should be extracted.
+ * @param directory The path to the directory inside the tarball.
+ * @param destinationFilePath The destination file path.
+ */
+export async function extractDirectoryFromTarball(
+  tarballPath: string,
+  directory: string,
+  destinationFilePath: string
+) {
+  return new Promise<boolean>((resolve, reject) => {
+    const tarExtractStream = tar.extract();
+    tarExtractStream.on('entry', function (header, stream, next) {
+      if (header.name.match(directory)) {
+        const destinationPath = join(
+          destinationFilePath,
+          header.name.split(directory)[1]
+        );
+        ensureDirSync(dirname(destinationPath));
+        const destinationFileStream = createWriteStream(destinationPath);
+        stream.pipe(destinationFileStream);
+      }
+      stream.on('end', function () {
+        next();
+      });
+      stream.resume();
+    });
+
+    tarExtractStream
+      .on('finish', function () {
+        resolve(true);
+      })
+      .on('error', function () {
+        reject(false);
+      });
+
+    createReadStream(tarballPath).pipe(createGunzip()).pipe(tarExtractStream);
+  });
+}
