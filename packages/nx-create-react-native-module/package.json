@@ -6,8 +6,5 @@
   "executors": "./executors.json",
   "dependencies": {
     "@nrwl/react-native": "13.10.2"
-  },
-  "peerDependencies": {
-    "@nrwl/react-native": "^13.10.2"
   }
 }
