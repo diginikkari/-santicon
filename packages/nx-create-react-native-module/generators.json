@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "nx-create-react-native-module",
+  "version": "0.0.1",
+  "generators": {
+    "nx-create-react-native-module": {
+      "factory": "./src/generators/nx-create-react-native-module/generator",
+      "schema": "./src/generators/nx-create-react-native-module/schema.json",
+      "description": "nx-create-react-native-module generator"
+    }
+  }
+}

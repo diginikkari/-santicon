@@ -1,0 +1,54 @@
+{
+  "root": "packages/nx-create-react-native-module",
+  "sourceRoot": "packages/nx-create-react-native-module/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/nx-create-react-native-module",
+        "main": "packages/nx-create-react-native-module/src/index.ts",
+        "tsConfig": "packages/nx-create-react-native-module/tsconfig.lib.json",
+        "assets": [
+          "packages/nx-create-react-native-module/*.md",
+          {
+            "input": "./packages/nx-create-react-native-module/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./packages/nx-create-react-native-module/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./packages/nx-create-react-native-module",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./packages/nx-create-react-native-module",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/nx-create-react-native-module/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/nx-create-react-native-module"],
+      "options": {
+        "jestConfig": "packages/nx-create-react-native-module/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

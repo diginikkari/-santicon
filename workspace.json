@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "nx-create-react-native-module": "packages/nx-create-react-native-module",
+    "nx-create-react-native-module-e2e": "e2e/nx-create-react-native-module-e2e"
+  }
+}
