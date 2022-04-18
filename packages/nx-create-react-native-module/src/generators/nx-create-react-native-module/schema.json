@@ -23,17 +23,20 @@
       "pattern": "^[a-zA-Z].*$"
     },
     "authorName": {
+      "title": "Author Name",
       "type": "string",
       "description": "Author name.",
       "x-prompt": "What authorName should be used for library?",
       "pattern": "^[a-zA-Z].*$"
     },
     "authorEmail": {
+      "title": "Author Email",
       "type": "string",
       "description": "Author email.",
       "x-prompt": "What author email should be used for library?"
     },
     "authorUrl": {
+      "title": "Author Url",
       "type": "string",
       "description": "Author url.",
       "x-prompt": "What author url should be used for library?"

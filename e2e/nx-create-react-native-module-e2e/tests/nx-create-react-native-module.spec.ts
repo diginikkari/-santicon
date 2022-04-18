@@ -13,11 +13,8 @@ describe('nx-create-react-native-module e2e', () => {
       'dist/packages/nx-create-react-native-module'
     );
     await runNxCommandAsync(
-      `npx nx generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin} --name=MyNativeModule --authorEmail=first.last@email.com --authorName='First Last' --authorUrl=github.com`
+      `generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin} --name=MyNativeModule --authorEmail=first.last@email.com --authorName='First Last' --authorUrl=github.com`
     );
-
-    const result = await runNxCommandAsync(`build ${plugin}`);
-    expect(result.stdout).toContain('Executor ran');
   }, 120000);
 
   describe('--directory', () => {
@@ -28,10 +25,10 @@ describe('nx-create-react-native-module e2e', () => {
         'dist/packages/nx-create-react-native-module'
       );
       await runNxCommandAsync(
-        `npx nx generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin} --name=MyNativeModule --authorEmail=first.last@email.com --authorName='First Last' --authorUrl=github.com --directory subdir`
+        `generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin} --name=MyNativeModule --authorEmail=first.last@email.com --authorName='First Last' --authorUrl=github.com --directory subdir`
       );
       expect(() =>
-        checkFilesExist(`libs/subdir/${plugin}/src/index.ts`)
+        checkFilesExist(`libs/subdir/my-native-module/src/index.ts`)
       ).not.toThrow();
     }, 120000);
   });
@@ -44,9 +41,9 @@ describe('nx-create-react-native-module e2e', () => {
         'dist/packages/nx-create-react-native-module'
       );
       await runNxCommandAsync(
-        `npx nx generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin} --name=MyNativeModule --authorEmail=first.last@email.com --authorName='First Last' --authorUrl=github.com --tags e2etag,e2ePackage`
+        `generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin} --name=MyNativeModule --authorEmail=first.last@email.com --authorName='First Last' --authorUrl=github.com --tags e2etag,e2ePackage`
       );
-      const project = readJson(`libs/${plugin}/project.json`);
+      const project = readJson(`libs/my-native-module/project.json`);
       expect(project.tags).toEqual(['e2etag', 'e2ePackage']);
     }, 120000);
   });

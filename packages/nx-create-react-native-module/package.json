@@ -4,8 +4,10 @@
   "main": "src/index.js",
   "generators": "./generators.json",
   "executors": "./executors.json",
-  "peerDependencies": {
-    "create-react-native-library": "^0.20.1",
+  "dependencies": {
     "@nrwl/react-native": "13.10.2"
+  },
+  "peerDependencies": {
+    "@nrwl/react-native": "^13.10.2"
   }
 }
