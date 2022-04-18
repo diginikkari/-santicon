@@ -1,0 +1,24 @@
+# <%= name %>
+
+This library was generated with [Nx](https://nx.dev).
+
+## Running unit tests
+
+Run `nx test <%= name %>` to execute the unit tests via [Jest](https://jestjs.io).
+
+## Add module to app
+
+To use this native module you should add or modify `react-native.config.js` -file in root of your application.
+This should be enough at least for IOS to find your library when installing pods.
+
+```js
+const path = require('path');
+
+module.exports = {
+  dependencies: {
+    '<%= name %>': {
+      root: path.resolve(__dirname, '../../../RELATIVE_PATH_TO_LIB'),
+    },
+  },
+};
+```

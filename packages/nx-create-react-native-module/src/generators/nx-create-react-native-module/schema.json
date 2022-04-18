@@ -2,28 +2,115 @@
   "$schema": "http://json-schema.org/schema",
   "cli": "nx",
   "$id": "NxCreateReactNativeModule",
-  "title": "",
   "type": "object",
+  "title": "Create a React Native Module Library for Nx",
+  "description": "Create a React Native Module Library for Nx.",
+  "examples": [
+    {
+      "command": "nx g lib mylib --directory=myapp",
+      "description": "Generate `libs/myapp/mylib`"
+    }
+  ],
   "properties": {
     "name": {
       "type": "string",
-      "description": "",
+      "description": "Library name.",
       "$default": {
         "$source": "argv",
         "index": 0
       },
-      "x-prompt": "What name would you like to use?"
+      "x-prompt": "What name would you like to use for the library?",
+      "pattern": "^[a-zA-Z].*$"
     },
-    "tags": {
+    "authorName": {
       "type": "string",
-      "description": "Add tags to the project (used for linting)",
-      "alias": "t"
+      "description": "Author name.",
+      "x-prompt": "What authorName should be used for library?",
+      "pattern": "^[a-zA-Z].*$"
+    },
+    "authorEmail": {
+      "type": "string",
+      "description": "Author email.",
+      "x-prompt": "What author email should be used for library?"
+    },
+    "authorUrl": {
+      "type": "string",
+      "description": "Author url.",
+      "x-prompt": "What author url should be used for library?"
+    },
+    "description": {
+      "type": "string",
+      "description": "Library description."
+    },
+    "type": {
+      "type": "string",
+      "description": "Module type",
+      "enum": ["view", "module"],
+      "default": "module"
+    },
+    "languages": {
+      "type": "string",
+      "description": "Languages to generate.",
+      "enum": ["cpp", "kotlin-objc", "kotlin-swift", "java-swift"],
+      "default": "kotlin-swift"
     },
     "directory": {
       "type": "string",
-      "description": "A directory where the project is placed",
+      "description": "A directory where the lib is placed.",
       "alias": "d"
+    },
+    "linter": {
+      "description": "The tool to use for running lint checks.",
+      "type": "string",
+      "enum": ["eslint", "tslint"],
+      "default": "eslint"
+    },
+    "unitTestRunner": {
+      "type": "string",
+      "enum": ["jest", "none"],
+      "description": "Test runner to use for unit tests.",
+      "default": "jest"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Add tags to the library (used for linting).",
+      "alias": "t"
+    },
+    "skipFormat": {
+      "description": "Skip formatting files.",
+      "type": "boolean",
+      "default": false
+    },
+    "skipTsConfig": {
+      "type": "boolean",
+      "default": false,
+      "description": "Do not update `tsconfig.json` for development experience."
+    },
+    "pascalCaseFiles": {
+      "type": "boolean",
+      "description": "Use pascal case component file name (e.g. `App.tsx`).",
+      "alias": "P",
+      "default": false
+    },
+    "importPath": {
+      "type": "string",
+      "description": "The library name used to import it, like `@myorg/my-awesome-lib`."
+    },
+    "globalCss": {
+      "type": "boolean",
+      "description": "When `true`, the stylesheet is generated using global CSS instead of CSS modules (e.g. file is `*.css` rather than `*.module.css`).",
+      "default": false
+    },
+    "strict": {
+      "type": "boolean",
+      "description": "Whether to enable tsconfig strict mode or not.",
+      "default": true
+    },
+    "setParserOptionsProject": {
+      "type": "boolean",
+      "description": "Whether or not to configure the ESLint `parserOptions.project` option. We do not do this by default for lint performance reasons.",
+      "default": false
     }
   },
-  "required": ["name"]
+  "required": ["name", "authorName", "authorEmail"]
 }

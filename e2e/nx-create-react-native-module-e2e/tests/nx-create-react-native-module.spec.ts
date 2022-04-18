@@ -13,7 +13,7 @@ describe('nx-create-react-native-module e2e', () => {
       'dist/packages/nx-create-react-native-module'
     );
     await runNxCommandAsync(
-      `generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin}`
+      `npx nx generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin} --name=MyNativeModule --authorEmail=first.last@email.com --authorName='First Last' --authorUrl=github.com`
     );
 
     const result = await runNxCommandAsync(`build ${plugin}`);
@@ -28,7 +28,7 @@ describe('nx-create-react-native-module e2e', () => {
         'dist/packages/nx-create-react-native-module'
       );
       await runNxCommandAsync(
-        `generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin} --directory subdir`
+        `npx nx generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin} --name=MyNativeModule --authorEmail=first.last@email.com --authorName='First Last' --authorUrl=github.com --directory subdir`
       );
       expect(() =>
         checkFilesExist(`libs/subdir/${plugin}/src/index.ts`)
@@ -44,7 +44,7 @@ describe('nx-create-react-native-module e2e', () => {
         'dist/packages/nx-create-react-native-module'
       );
       await runNxCommandAsync(
-        `generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin} --tags e2etag,e2ePackage`
+        `npx nx generate @santicon/nx-create-react-native-module:nx-create-react-native-module ${plugin} --name=MyNativeModule --authorEmail=first.last@email.com --authorName='First Last' --authorUrl=github.com --tags e2etag,e2ePackage`
       );
       const project = readJson(`libs/${plugin}/project.json`);
       expect(project.tags).toEqual(['e2etag', 'e2ePackage']);

@@ -1,0 +1,8 @@
+{
+  "name": "<%= repo %>",
+  "version": "<%= version %>",
+  "description": "<%= project.description %>",
+  "homepage": "<%= author.url %>",
+  "license": "MIT",
+  "author": "<%= author.name %> <<%= author.email %>> (<%= author.url %>)"
+}
