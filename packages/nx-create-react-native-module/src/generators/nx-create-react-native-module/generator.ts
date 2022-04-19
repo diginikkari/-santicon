@@ -92,8 +92,6 @@ export default async function (
 
   const templates = path.join(dir, 'templates');
 
-  console.log('templates', templates);
-
   const CPP_FILES = path.join(templates, 'cpp-library');
 
   const NATIVE_COMMON_FILES = path.resolve(
