@@ -50,4 +50,19 @@ describe('nx-create-react-native-module generator', () => {
     const config = readProjectConfiguration(appTree, 'my-native-module');
     expect(config).toBeDefined();
   });
+
+  it('should create AndroidManifest', async () => {
+    await generator(appTree, options);
+    expect(
+      appTree
+        .read('libs/my-native-module/android/src/main/AndroidManifest.xml')
+        .toString()
+    ).toMatchInlineSnapshot(`
+      "<manifest xmlns:android=\\"http://schemas.android.com/apk/res/android\\"
+                package=\\"com.mynativemodule\\">
+
+      </manifest>
+      "
+    `);
+  });
 });

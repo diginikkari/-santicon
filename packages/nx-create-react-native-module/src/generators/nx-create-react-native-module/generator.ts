@@ -6,8 +6,6 @@ import {
   logger,
   generateFiles,
   joinPathFragments,
-  updateJson,
-  readProjectConfiguration,
 } from '@nrwl/devkit';
 import { reactNativeLibraryGenerator } from '@nrwl/react-native';
 import { normalizeOptions } from '@nrwl/react-native/src/generators/library/lib/normalize-options';
@@ -19,11 +17,9 @@ import {
   statSync,
   readFileSync,
   readdirSync,
-  createWriteStream,
   createReadStream,
 } from 'fs-extra';
-import { dirname } from 'path';
-import * as tar from 'tar-stream';
+import * as tar from 'tar';
 import * as ejs from 'ejs';
 import { createGunzip } from 'zlib';
 import { createTempNpmDirectory, packageRegistryPack } from './package_manager';
@@ -95,6 +91,8 @@ export default async function (
   // );
 
   const templates = path.join(dir, 'templates');
+
+  console.log('templates', templates);
 
   const CPP_FILES = path.join(templates, 'cpp-library');
 
@@ -240,31 +238,18 @@ export async function extractDirectoryFromTarball(
   destinationFilePath: string
 ) {
   return new Promise<boolean>((resolve, reject) => {
-    const tarExtractStream = tar.extract();
-    tarExtractStream.on('entry', function (header, stream, next) {
-      if (header.name.match(directory)) {
-        const destinationPath = join(
-          destinationFilePath,
-          header.name.split(directory)[1]
-        );
-        ensureDirSync(dirname(destinationPath));
-        const destinationFileStream = createWriteStream(destinationPath);
-        stream.pipe(destinationFileStream);
-      }
-      stream.on('end', function () {
-        next();
-      });
-      stream.resume();
+    ensureDirSync(destinationFilePath);
+    const tarExtractStream = tar.extract({
+      filter: (path) => path.includes(directory),
+      cwd: destinationFilePath,
+      strip: 2,
     });
+    const gunzip = createGunzip();
+    gunzip.on('error', reject);
+    tarExtractStream.on('error', reject);
 
-    tarExtractStream
-      .on('finish', function () {
-        resolve(true);
-      })
-      .on('error', function () {
-        reject(false);
-      });
+    createReadStream(tarballPath).pipe(gunzip).pipe(tarExtractStream);
 
-    createReadStream(tarballPath).pipe(createGunzip()).pipe(tarExtractStream);
+    tarExtractStream.on('finish', resolve);
   });
 }
