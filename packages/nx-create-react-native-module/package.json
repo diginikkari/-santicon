@@ -1,6 +1,6 @@
 {
   "name": "@santicon/nx-create-react-native-module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Generate a NX library with React Native module to NX workspace",
   "keywords": [
     "React",
