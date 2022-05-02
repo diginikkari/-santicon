@@ -1,11 +1,12 @@
 {
   "name": "@santicon",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
     "build": "nx run nx-create-react-native-module:build",
-    "test": "nx test"
+    "test": "nx test",
+    "publish": ""
   },
   "private": true,
   "devDependencies": {
