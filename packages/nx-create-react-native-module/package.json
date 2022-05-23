@@ -15,6 +15,7 @@
   "generators": "./generators.json",
   "executors": "./executors.json",
   "dependencies": {
-    "@nrwl/react-native": "13.10.2"
+    "@nrwl/react-native": "14.1.7",
+    "nx": "14.1.7"
   }
 }
