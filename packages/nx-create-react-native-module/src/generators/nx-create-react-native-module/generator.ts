@@ -22,8 +22,11 @@ import {
 import * as tar from 'tar';
 import * as ejs from 'ejs';
 import { createGunzip } from 'zlib';
-import { createTempNpmDirectory, packageRegistryPack } from './package_manager';
 import { join } from 'path';
+import {
+  createTempNpmDirectory,
+  packageRegistryPack,
+} from 'nx/src/utils/package-manager';
 
 const BINARIES = /(gradlew|\.(jar|keystore|png|jpg|gif))$/;
 
@@ -39,18 +42,18 @@ export default async function (
   // Get workspace configuration
   const workspace = readWorkspaceConfiguration(tree);
 
-  const dir = createTempNpmDirectory();
+  const tempNpmDir = createTempNpmDirectory();
   try {
     const { tarballPath } = await packageRegistryPack(
-      dir,
+      tempNpmDir.dir,
       'create-react-native-library',
       '0.20.1'
     );
 
     await extractDirectoryFromTarball(
-      join(dir, tarballPath),
+      join(tempNpmDir.dir, tarballPath),
       'templates',
-      join(dir, 'templates')
+      join(tempNpmDir.dir, 'templates')
     );
   } catch (e) {
     console.error(e);
@@ -90,7 +93,7 @@ export default async function (
   //   require.resolve('create-react-native-library/package.json')
   // );
 
-  const templates = path.join(dir, 'templates');
+  const templates = path.join(tempNpmDir.dir, 'templates');
 
   const CPP_FILES = path.join(templates, 'cpp-library');
 
