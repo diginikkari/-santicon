@@ -1,4 +1,5 @@
-module.exports = {
+/* eslint-disable */
+export default {
   displayName: 'nx-create-react-native-module',
   preset: '../../jest.preset.js',
   globals: {

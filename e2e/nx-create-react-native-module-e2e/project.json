@@ -1,5 +1,4 @@
 {
-  "root": "e2e/nx-create-react-native-module-e2e",
   "projectType": "application",
   "sourceRoot": "e2e/nx-create-react-native-module-e2e/src",
   "targets": {

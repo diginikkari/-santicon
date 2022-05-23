@@ -1,5 +1,4 @@
 {
-  "root": "packages/nx-create-react-native-module",
   "sourceRoot": "packages/nx-create-react-native-module/src",
   "targets": {
     "build": {
@@ -45,7 +44,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/nx-create-react-native-module"],
       "options": {
-        "jestConfig": "packages/nx-create-react-native-module/jest.config.js",
+        "jestConfig": "packages/nx-create-react-native-module/jest.config.ts",
         "passWithNoTests": true
       }
     }
