@@ -7,7 +7,7 @@
     "test": "nx run nx-create-react-native-module:test",
     "e2e": "nx run nx-create-react-native-module-e2e:e2e",
     "nx": "nx",
-    "publish": ""
+    "publish": "npm publish ./dist/packages/nx-create-react-native-module --access public"
   },
   "private": true,
   "devDependencies": {
