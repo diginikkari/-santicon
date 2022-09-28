@@ -13,7 +13,7 @@ describe('nx-create-react-native-module generator', () => {
     authorName: 'First Last',
     authorUrl: 'https://www.example.com',
     languages: 'kotlin-swift',
-    type: 'module',
+    type: 'library',
     linter: Linter.EsLint,
     skipFormat: false,
     skipTsConfig: false,

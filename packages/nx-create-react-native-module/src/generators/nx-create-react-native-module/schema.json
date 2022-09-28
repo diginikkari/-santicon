@@ -48,13 +48,19 @@
     "type": {
       "type": "string",
       "description": "Module type",
-      "enum": ["view", "module"],
-      "default": "module"
+      "enum": [
+        "module-legacy",
+        "module-turbo",
+        "module-mixed",
+        "view",
+        "library"
+      ],
+      "default": "library"
     },
     "languages": {
       "type": "string",
       "description": "Languages to generate.",
-      "enum": ["cpp", "kotlin-objc", "kotlin-swift", "java-swift"],
+      "enum": ["cpp", "kotlin-objc", "kotlin-swift", "java-objc", "java-swift"],
       "default": "kotlin-swift"
     },
     "directory": {

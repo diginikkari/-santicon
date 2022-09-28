@@ -47,7 +47,7 @@ export default async function (
     const { tarballPath } = await packageRegistryPack(
       tempNpmDir.dir,
       'create-react-native-library',
-      '0.20.1'
+      '0.23.3'
     );
 
     await extractDirectoryFromTarball(
@@ -88,6 +88,15 @@ export default async function (
     version: workspace.version,
   };
 
+  const { type } = schema;
+  const moduleType = type === 'view' ? 'view' : 'module';
+  const architecture =
+    type === 'module-turbo'
+      ? 'turbo'
+      : type === 'module-mixed'
+      ? 'mixed'
+      : 'legacy';
+
   // Get path to template files from create-react-native-library
   // const createReactNativeLibraryRoot = path.dirname(
   //   require.resolve('create-react-native-library/package.json')
@@ -102,12 +111,16 @@ export default async function (
   );
 
   const NATIVE_FILES = {
-    module: path.join(templates, 'native-library'),
+    module_legacy: path.join(templates, 'native-library-legacy'),
+    module_turbo: path.join(templates, 'native-library-turbo'),
+    module_mixed: path.join(templates, 'native-library-mixed'),
     view: path.join(templates, 'native-view-library'),
   };
 
   const JAVA_FILES = {
-    module: path.join(templates, 'java-library'),
+    module_legacy: path.join(templates, 'java-library-legacy'),
+    module_turbo: path.join(templates, 'java-library-turbo'),
+    module_mixed: path.join(templates, 'java-library-mixed'),
     view: path.join(templates, 'java-view-library'),
   };
 
@@ -129,33 +142,23 @@ export default async function (
   if (templateOptions.project.swift) {
     copyDir(
       tree,
-      SWIFT_FILES[schema.type],
+      SWIFT_FILES[moduleType],
       options.projectRoot,
       templateOptions
     );
   } else {
-    copyDir(
-      tree,
-      OBJC_FILES[schema.type],
-      options.projectRoot,
-      templateOptions
-    );
+    copyDir(tree, OBJC_FILES[moduleType], options.projectRoot, templateOptions);
   }
 
   if (templateOptions.project.kotlin) {
     copyDir(
       tree,
-      KOTLIN_FILES[schema.type],
+      KOTLIN_FILES[moduleType],
       options.projectRoot,
       templateOptions
     );
   } else {
-    copyDir(
-      tree,
-      JAVA_FILES[schema.type],
-      options.projectRoot,
-      templateOptions
-    );
+    copyDir(tree, JAVA_FILES[moduleType], options.projectRoot, templateOptions);
   }
 
   if (templateOptions.project.cpp) {
@@ -166,12 +169,21 @@ export default async function (
   }
 
   copyDir(tree, NATIVE_COMMON_FILES, options.projectRoot, templateOptions);
-  copyDir(
-    tree,
-    NATIVE_FILES[schema.type],
-    options.projectRoot,
-    templateOptions
-  );
+  if (moduleType === 'module') {
+    copyDir(
+      tree,
+      NATIVE_FILES[`${moduleType}_${architecture}`],
+      options.projectRoot,
+      templateOptions
+    );
+  } else {
+    copyDir(
+      tree,
+      NATIVE_FILES[moduleType],
+      options.projectRoot,
+      templateOptions
+    );
+  }
 
   generateFiles(
     tree, // the virtual file system

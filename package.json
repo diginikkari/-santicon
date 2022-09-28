@@ -3,9 +3,9 @@
   "version": "0.0.3",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve",
     "build": "nx run nx-create-react-native-module:build",
-    "test": "nx test",
+    "test": "nx run nx-create-react-native-module:test",
+    "e2e": "nx run nx-create-react-native-module-e2e:e2e",
     "nx": "nx",
     "publish": ""
   },
@@ -22,6 +22,7 @@
     "@nrwl/react-native": "14.7.17",
     "@nrwl/workspace": "14.7.17",
     "@swc-node/register": "^1.4.2",
+    "@swc/cli": "~0.1.55",
     "@swc/core": "^1.2.173",
     "@types/ejs": "^3.1.0",
     "@types/jest": "28.1.8",
@@ -42,6 +43,7 @@
     "typescript": "4.7.4"
   },
   "dependencies": {
+    "@swc/helpers": "~0.3.3",
     "jest-environment-jsdom": "^28.1.3",
     "tslib": "^2.0.0"
   }

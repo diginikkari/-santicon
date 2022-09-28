@@ -9,5 +9,5 @@ export interface NxCreateReactNativeModuleGeneratorSchema extends Schema {
   authorUrl: string;
   description?: string;
   languages: 'cpp' | 'kotlin-objc' | 'kotlin-swift' | 'java-swift';
-  type: 'view' | 'module';
+  type: 'view' | 'library' | 'module-legacy' | 'module-turbo' | 'module-mixed';
 }
