@@ -3,5 +3,6 @@
   "projects": {
     "nx-create-react-native-module": "packages/nx-create-react-native-module",
     "nx-create-react-native-module-e2e": "e2e/nx-create-react-native-module-e2e"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

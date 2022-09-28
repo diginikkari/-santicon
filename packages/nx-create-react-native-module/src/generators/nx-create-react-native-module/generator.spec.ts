@@ -1,4 +1,4 @@
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { createTreeWithEmptyV1Workspace } from '@nrwl/devkit/testing';
 import { Tree, readJson, readProjectConfiguration } from '@nrwl/devkit';
 
 import generator from './generator';
@@ -22,7 +22,7 @@ describe('nx-create-react-native-module generator', () => {
   };
 
   beforeEach(() => {
-    appTree = createTreeWithEmptyWorkspace();
+    appTree = createTreeWithEmptyV1Workspace();
     appTree.write('.gitignore', '');
   });
 

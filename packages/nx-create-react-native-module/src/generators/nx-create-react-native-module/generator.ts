@@ -195,6 +195,7 @@ export default async function (
 }
 
 // Generate files from templates to Tree
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const copyDir = (tree: Tree, source: string, dest: string, options: any) => {
   const files = readdirSync(source);
 
