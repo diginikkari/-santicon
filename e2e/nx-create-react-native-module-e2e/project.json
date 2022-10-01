@@ -9,6 +9,12 @@
         "target": "nx-create-react-native-module:build",
         "jestConfig": "e2e/nx-create-react-native-module-e2e/jest.config.js"
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional"
+      }
     }
   },
   "tags": [],

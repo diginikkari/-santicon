@@ -7,10 +7,13 @@
     "test": "nx run nx-create-react-native-module:test",
     "e2e": "nx run nx-create-react-native-module-e2e:e2e",
     "nx": "nx",
-    "publish": "npm publish ./dist/packages/nx-create-react-native-module --access public"
+    "publish": "npm publish ./dist/packages/nx-create-react-native-module --access public",
+    "prepare": "husky install"
   },
   "private": true,
   "devDependencies": {
+    "@commitlint/cli": "^17.0.0",
+    "@commitlint/config-conventional": "^17.0.0",
     "@jscutlery/semver": "^2.27.1",
     "@nrwl/cli": "14.8.2",
     "@nrwl/devkit": "14.8.2",
@@ -34,6 +37,7 @@
     "detox": "^19.12.3",
     "eslint": "8.15.0",
     "eslint-config-prettier": "8.1.0",
+    "husky": "^8.0.0",
     "jest": "28.1.3",
     "metro-babel-register": "0.72.2",
     "metro-react-native-babel-transformer": "0.72.2",
